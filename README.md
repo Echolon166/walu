@@ -1,2 +1,3 @@
-# walu
-Walu - Lukso Wallet &amp; Vault Manager
+# Walu
+
+Walu - Lukso Wallet - Vault Manager
