@@ -3,9 +3,10 @@ import { ethers } from 'ethers';
 import { useCallback, useEffect, useReducer } from 'react';
 import Web3Modal from 'web3modal';
 
-import type { Web3Action, Web3ProviderState } from '@/reducers';
-import { web3InitialState, web3Reducer } from '@/reducers';
 import { DEFAULT_NETWORK_CONFIG } from '@/utils';
+
+import type { Web3Action, Web3ProviderState } from './Web3Provider';
+import { web3InitialState, web3Reducer } from './Web3Provider';
 
 const providerOptions = {
   walletconnect: {

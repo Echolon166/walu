@@ -1,4 +1,4 @@
-import { useWeb3Context } from '@/context';
+import { useWeb3Context } from '@/core/web3';
 
 type ConnectProps = {
   connect: (() => Promise<void>) | null;
