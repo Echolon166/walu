@@ -32,3 +32,9 @@ export const PRIVATE_KEY =
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
 export const DEFAULT_NETWORK_CONFIG = NETWORKS[DEFAULT_NETWORK];
+
+export const INTERFACE_IDS = {
+  LSP7DigitalAsset: '0xe33f65c3',
+  LSP8IdentifiableDigitalAsset: '0x49399145',
+  LSP9Vault: '0x8c1d44f6',
+};
