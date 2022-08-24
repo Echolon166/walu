@@ -1,6 +1,32 @@
-export type AssetType = 'LSP7' | 'LSP8' | null;
+type Metadata = {
+  description: string;
+  links: {
+    title: string;
+    url: string;
+  }[];
+  icon: {
+    width: number;
+    height: number;
+    hashFunction: string;
+    hash: string;
+    url: string;
+  }[];
+  images: {
+    width: number;
+    height: number;
+    hashFunction: string;
+    hash: string;
+    url: string;
+  }[];
+  assets: {
+    hashFunction: string;
+    hash: string;
+    url: string;
+    fileType: string;
+  }[];
+};
 
-export class Asset {
+class Asset {
   contractAddress: string;
 
   name: string;
@@ -9,50 +35,41 @@ export class Asset {
 
   creators: string[];
 
-  metadata: {
-    description: string;
-    links: {
-      title: string;
-      url: string;
-    }[];
-    icon: {
-      width: number;
-      height: number;
-      hashFunction: string;
-      hash: string;
-      url: string;
-    }[];
-    images: {
-      width: number;
-      height: number;
-      hashFunction: string;
-      hash: string;
-      url: string;
-    }[];
-    assets: {
-      hashFunction: string;
-      hash: string;
-      url: string;
-      fileType: string;
-    }[];
-  };
+  metadata: Metadata;
 
-  type?: AssetType;
-
-  id?: number;
-
-  amount?: number;
-
-  constructor(rawAsset: any) {
-    const [contractAddress, lsp4Asset, type, id, amount] = rawAsset;
-
+  constructor(contractAddress: string, rawAsset: any) {
     this.contractAddress = contractAddress;
-    this.name = (lsp4Asset[1]?.value as string) ?? '';
-    this.symbol = (lsp4Asset[2]?.value as string) ?? '';
-    this.metadata = (lsp4Asset[3]?.value as any)?.LSP4Metadata ?? [];
-    this.creators = (lsp4Asset[4]?.value as string[]) ?? [];
-    this.type = type;
+    this.name = (rawAsset[1]?.value as string) ?? '';
+    this.symbol = (rawAsset[2]?.value as string) ?? '';
+    this.metadata = (rawAsset[3]?.value as any)?.LSP4Metadata ?? [];
+    this.creators = (rawAsset[4]?.value as string[]) ?? [];
+  }
+}
+
+export class Lsp7Asset extends Asset {
+  balance?: number;
+
+  constructor(contractAddress: string, rawAsset: any, balance?: number) {
+    super(contractAddress, rawAsset);
+
+    this.balance = balance;
+  }
+}
+
+export class Lsp8Asset extends Asset {
+  id: string;
+
+  lsp8Metadata: Metadata;
+
+  constructor(
+    contractAddress: string,
+    rawAsset: any,
+    id: string,
+    lsp8Metadata: any
+  ) {
+    super(contractAddress, rawAsset);
+
     this.id = id;
-    this.amount = amount;
+    this.lsp8Metadata = lsp8Metadata[0]?.value?.LSP4Metadata;
   }
 }

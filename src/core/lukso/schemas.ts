@@ -102,13 +102,15 @@ export const LSP4Schema: ERC725JSONSchema[] = [
   },
 ];
 
-export const LSP8IdentifiableDigitalAssetSchema: ERC725JSONSchema = {
-  name: 'LSP8MetadataJSON:<bytes32>',
-  key: '0x9a26b4060ae7f7d5e3cd0000<bytes32>',
-  keyType: 'Mapping',
-  valueType: 'bytes',
-  valueContent: 'JSONURL',
-};
+export const LSP8IdentifiableDigitalAssetSchema: ERC725JSONSchema[] = [
+  {
+    name: 'LSP8MetadataJSON:<bytes32>',
+    key: '0x9a26b4060ae7f7d5e3cd0000<bytes32>',
+    keyType: 'Mapping',
+    valueType: 'bytes',
+    valueContent: 'JSONURL',
+  },
+];
 
 // Parameters for the ERC725 instance
 const config = { ipfsGateway: NETWORKS.l16.ipfs.url };
