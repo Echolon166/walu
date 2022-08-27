@@ -1,8 +1,8 @@
-import { ethers } from 'ethers';
+import type Web3 from 'web3';
 
 // Get LYX balance of the account
-export const getAccountBalance = async (web3Provider: any, address: string) => {
-  const balance = await web3Provider.getBalance(address);
+export const getAccountBalance = async (web3: Web3, address: string) => {
+  const balance = await web3.eth.getBalance(address);
 
-  return ethers.utils.formatEther(balance);
+  return web3.utils.fromWei(balance);
 };

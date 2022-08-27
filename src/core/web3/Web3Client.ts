@@ -1,6 +1,6 @@
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { ethers } from 'ethers';
 import { useCallback, useEffect, useReducer } from 'react';
+import Web3 from 'web3';
 import Web3Modal from 'web3modal';
 
 import { DEFAULT_NETWORK_CONFIG } from '@/utils';
@@ -31,22 +31,25 @@ if (typeof window !== 'undefined') {
 
 export const useWeb3 = () => {
   const [state, dispatch] = useReducer(web3Reducer, web3InitialState);
-  let { provider, web3Provider, address, network } = state;
+  let { provider, web3, address, controllerAddress, network } = state;
 
   const connect = useCallback(async () => {
     if (web3Modal) {
       try {
         provider = await web3Modal.connect();
-        web3Provider = new ethers.providers.Web3Provider(provider);
-        const signer = web3Provider.getSigner();
-        address = await signer.getAddress();
-        network = await web3Provider.getNetwork();
+        web3 = new Web3(provider);
+        [address] = await web3.eth.getAccounts();
+        controllerAddress = web3.eth.accounts.wallet.add(
+          process.env.NEXT_PUBLIC_CONTROLLER_PRIVATE_KEY as string
+        ).address;
+        network = await web3.eth.getChainId();
 
         dispatch({
           type: 'SET_WEB3_PROVIDER',
           provider,
-          web3Provider,
+          web3,
           address,
+          controllerAddress,
           network,
         } as Web3Action);
       } catch (e) {
@@ -94,9 +97,9 @@ export const useWeb3 = () => {
       };
 
       // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
-      const handleChainChanged = (_hexChainId: string) => {
+      const handleChainChanged = (chainId: number) => {
         if (typeof window !== 'undefined') {
-          console.log('switched to chain...', _hexChainId);
+          console.log('switched to chain...', chainId);
           window.location.reload();
         } else {
           console.log('window is undefined');
@@ -127,8 +130,9 @@ export const useWeb3 = () => {
 
   return {
     provider,
-    web3Provider,
+    web3,
     address,
+    controllerAddress,
     network,
     connect,
     disconnect,

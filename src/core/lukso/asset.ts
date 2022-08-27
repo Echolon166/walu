@@ -73,3 +73,8 @@ export class Lsp8Asset extends Asset {
     this.lsp8Metadata = lsp8Metadata[0]?.value?.LSP4Metadata;
   }
 }
+
+export type AssetMap = {
+  lsp7: Lsp7Asset[];
+  lsp8: Lsp8Asset[];
+};

@@ -23,9 +23,9 @@ const DisconnectButton = ({ disconnect }: DisconnectProps) =>
   );
 
 export function Web3Button() {
-  const { web3Provider, connect, disconnect } = useWeb3Context();
+  const { web3, connect, disconnect } = useWeb3Context();
 
-  return web3Provider ? (
+  return web3 ? (
     <DisconnectButton disconnect={disconnect} />
   ) : (
     <ConnectButton connect={connect} />

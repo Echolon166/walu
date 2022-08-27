@@ -1,11 +1,13 @@
 import LSP7DigitalAsset from '@lukso/lsp-smart-contracts/artifacts/LSP7DigitalAsset.json';
 import LSP8IdentifiableDigitalAsset from '@lukso/lsp-smart-contracts/artifacts/LSP8IdentifiableDigitalAsset.json';
-import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
+import type Web3 from 'web3';
+import type { AbiItem } from 'web3-utils';
 
 import { INTERFACE_IDS } from '@/utils/config';
 
 import { useWeb3Context } from '../web3';
+import type { AssetMap } from './asset';
 import { Lsp7Asset, Lsp8Asset } from './asset';
 import {
   getInstance,
@@ -14,17 +16,13 @@ import {
   UniversalProfileSchema,
 } from './schemas';
 
-async function fetchAssets(
-  ownedAssets: any,
-  web3Provider: any,
-  address: string | null | undefined
-) {
+async function fetchAssets(web3: Web3, address: string, ownedAssets: string[]) {
   async function fetchAssetMetadata(ownedAsset: string) {
     // Instantiate the asset
     const digitalAsset = getInstance(
-      ownedAsset,
       LSP4Schema,
-      web3Provider?.provider
+      ownedAsset,
+      web3.currentProvider
     );
 
     // Get the encoded data
@@ -35,9 +33,9 @@ async function fetchAssets(
   async function fetchLSP8Metadata(asset: string, tokenId: string) {
     // Fetch the LSP5 data of the Universal Profile to get its owned assets
     const lsp8Asset = getInstance(
-      asset,
       LSP8IdentifiableDigitalAssetSchema,
-      web3Provider?.provider
+      asset,
+      web3.currentProvider
     );
 
     const data = await lsp8Asset.fetchData([
@@ -53,36 +51,36 @@ async function fetchAssets(
   async function fetchDetails(ownedAsset: string) {
     const metadata = await fetchAssetMetadata(ownedAsset);
 
-    const lSP8IdentifiableDigitalAssetContract = new ethers.Contract(
-      ownedAsset,
-      LSP8IdentifiableDigitalAsset.abi,
-      web3Provider.getSigner()
+    const lSP8IdentifiableDigitalAssetContract = new web3.eth.Contract(
+      LSP8IdentifiableDigitalAsset.abi as AbiItem[],
+      ownedAsset
     );
 
     const [isLSP7, isLSP8] = await Promise.all([
-      lSP8IdentifiableDigitalAssetContract.supportsInterface(
-        INTERFACE_IDS.LSP7DigitalAsset
-      ),
-      lSP8IdentifiableDigitalAssetContract.supportsInterface(
-        INTERFACE_IDS.LSP8IdentifiableDigitalAsset
-      ),
+      lSP8IdentifiableDigitalAssetContract.methods
+        .supportsInterface(INTERFACE_IDS.LSP7DigitalAsset)
+        .call(),
+      lSP8IdentifiableDigitalAssetContract.methods
+        .supportsInterface(INTERFACE_IDS.LSP8IdentifiableDigitalAsset)
+        .call(),
     ]);
 
     if (isLSP7) {
-      const lsp7DigitalAssetContract = new ethers.Contract(
-        ownedAsset,
-        LSP7DigitalAsset.abi,
-        web3Provider.getSigner()
+      const lsp7DigitalAssetContract = new web3.eth.Contract(
+        LSP7DigitalAsset.abi as AbiItem[],
+        ownedAsset
       );
 
-      const balance = await lsp7DigitalAssetContract.balanceOf(address);
+      const balance = await lsp7DigitalAssetContract.methods
+        .balanceOf(address)
+        .call();
 
-      return ['LSP7', ownedAsset, metadata, ethers.utils.formatEther(balance)];
+      return ['LSP7', ownedAsset, metadata, web3.utils.fromWei(balance)];
     }
     if (isLSP8) {
-      const tokenIds = await lSP8IdentifiableDigitalAssetContract.tokenIdsOf(
-        address
-      );
+      const tokenIds = await lSP8IdentifiableDigitalAssetContract.methods
+        .tokenIdsOf(address)
+        .call();
 
       return ['LSP8', ownedAsset, metadata, tokenIds];
     }
@@ -92,7 +90,7 @@ async function fetchAssets(
   }
 
   const rawAssetCollections = await Promise.all(
-    ownedAssets.map((ownedAsset: any) => fetchDetails(ownedAsset))
+    ownedAssets.map((ownedAsset: string) => fetchDetails(ownedAsset))
   );
 
   const lsp7Assets: Lsp7Asset[] = [];
@@ -123,12 +121,12 @@ async function fetchAssets(
   return [lsp7Assets, lsp8Assets];
 }
 
-export const useAssets = (): any => {
+export const useAssets = (): [AssetMap, boolean] => {
   const [lsp7Assets, setLsp7Assets] = useState<Lsp7Asset[]>([]);
   const [lsp8Assets, setLsp8Assets] = useState<Lsp8Asset[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const { web3Provider, address } = useWeb3Context();
+  const { web3, address } = useWeb3Context();
 
   useEffect(() => {
     const fetchProfileAssets = async () => {
@@ -137,15 +135,15 @@ export const useAssets = (): any => {
 
         // Fetch the LSP5 data of the Universal Profile to get its owned assets
         const profile = getInstance(
-          address as string,
           UniversalProfileSchema,
-          web3Provider?.provider
+          address as string,
+          web3?.currentProvider
         );
 
         const result = await profile.fetchData('LSP5ReceivedAssets[]');
         const ownedAssets = result.value;
 
-        fetchAssets(ownedAssets, web3Provider, address).then(
+        fetchAssets(web3!, address!, ownedAssets as string[]).then(
           ([mappedLsp7Assets, mappedLsp8Assets]) => {
             setLsp7Assets(mappedLsp7Assets as Lsp7Asset[]);
             setLsp8Assets(mappedLsp8Assets as Lsp8Asset[]);

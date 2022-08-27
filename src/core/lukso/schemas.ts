@@ -102,6 +102,52 @@ export const LSP4Schema: ERC725JSONSchema[] = [
   },
 ];
 
+// '@erc725/erc725.js/schemas/LSP6KeyManager.json'
+export const LSP6KeyManagerSchema: ERC725JSONSchema[] = [
+  {
+    name: 'AddressPermissions[]',
+    key: '0xdf30dba06db6a30e65354d9a64c609861f089545ca58c6b4dbe31a5f338cb0e3',
+    keyType: 'Array',
+    valueType: 'address',
+    valueContent: 'Address',
+  },
+  {
+    name: 'AddressPermissions:Permissions:<address>',
+    key: '0x4b80742de2bf82acb3630000<address>',
+    keyType: 'MappingWithGrouping',
+    valueType: 'bytes32',
+    valueContent: 'BitArray',
+  },
+  {
+    name: 'AddressPermissions:AllowedAddresses:<address>',
+    key: '0x4b80742de2bfc6dd6b3c0000<address>',
+    keyType: 'MappingWithGrouping',
+    valueType: 'address[]',
+    valueContent: 'Address',
+  },
+  {
+    name: 'AddressPermissions:AllowedFunctions:<address>',
+    key: '0x4b80742de2bf8efea1e80000<address>',
+    keyType: 'MappingWithGrouping',
+    valueType: 'bytes4[]',
+    valueContent: 'Bytes4',
+  },
+  {
+    name: 'AddressPermissions:AllowedStandards:<address>',
+    key: '0x4b80742de2bf3efa94a30000<address>',
+    keyType: 'MappingWithGrouping',
+    valueType: 'bytes4[]',
+    valueContent: 'Bytes4',
+  },
+  {
+    name: 'AddressPermissions:AllowedERC725YKeys:<address>',
+    key: '0x4b80742de2bf90b8b4850000<address>',
+    keyType: 'MappingWithGrouping',
+    valueType: 'bytes4[]',
+    valueContent: 'Bytes4',
+  },
+];
+
 export const LSP8IdentifiableDigitalAssetSchema: ERC725JSONSchema[] = [
   {
     name: 'LSP8MetadataJSON:<bytes32>',
@@ -112,13 +158,31 @@ export const LSP8IdentifiableDigitalAssetSchema: ERC725JSONSchema[] = [
   },
 ];
 
+// '@erc725/erc725.js/schemas/LSP10ReceivedVaults.json'
+export const LSP10ReceivedVaultsSchema: ERC725JSONSchema[] = [
+  {
+    name: 'LSP10VaultsMap:<address>',
+    key: '0x192448c3c0f88c7f238c0000<address>',
+    keyType: 'Mapping',
+    valueType: '(bytes4,bytes8)',
+    valueContent: '(Bytes4,Number)',
+  },
+  {
+    name: 'LSP10Vaults[]',
+    key: '0x55482936e01da86729a45d2b87a6b1d3bc582bea0ec00e38bdb340e3af6f9f06',
+    keyType: 'Array',
+    valueType: 'address',
+    valueContent: 'Address',
+  },
+];
+
 // Parameters for the ERC725 instance
 const config = { ipfsGateway: NETWORKS.l16.ipfs.url };
 
 export function getInstance(
-  contractAddress: string,
   providedSchema: ERC725JSONSchema[],
-  provider: any
+  contractAddress?: string,
+  provider?: any
 ) {
   // Instantiate the asset
   const erc725 = new ERC725(providedSchema, contractAddress, provider, config);
