@@ -2,10 +2,12 @@ import LSP1UniversalReceiverDelegateVault from '@lukso/lsp-smart-contracts/artif
 import LSP6KeyManager from '@lukso/lsp-smart-contracts/artifacts/LSP6KeyManager.json';
 import LSP9Vault from '@lukso/lsp-smart-contracts/artifacts/LSP9Vault.json';
 import UniversalProfile from '@lukso/lsp-smart-contracts/artifacts/UniversalProfile.json';
-import constants from '@lukso/lsp-smart-contracts/constants';
+import { ERC725YKeys } from '@lukso/lsp-smart-contracts/constants';
 import { useEffect, useState } from 'react';
 import type Web3 from 'web3';
 import type { AbiItem } from 'web3-utils';
+
+import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@/utils';
 
 import { useWeb3Context } from '../web3';
 import { getPermissions } from './permission';
@@ -32,8 +34,8 @@ export const createVault = async (
     })
     .send({
       from: address,
-      gas: 5_000_000,
-      gasPrice: '1000000000',
+      gas: DEFAULT_GAS,
+      gasPrice: DEFAULT_GAS_PRICE,
     })
     .on('receipt', async (transactionReceipt) => {
       vaultAddress = transactionReceipt.contractAddress;
@@ -51,8 +53,8 @@ export const createVault = async (
   })
     .send({
       from: address,
-      gas: 5_000_000,
-      gasPrice: '1000000000',
+      gas: DEFAULT_GAS,
+      gasPrice: DEFAULT_GAS_PRICE,
     })
     .on('receipt', async (transactionReceipt) => {
       URDAddress = transactionReceipt.contractAddress;
@@ -60,7 +62,7 @@ export const createVault = async (
 
   console.log('Vault URD deployed: ', URDAddress);
 
-  const URD_DATA_KEY = constants.ERC725YKeys.LSP0.LSP1UniversalReceiverDelegate;
+  const URD_DATA_KEY = ERC725YKeys.LSP0.LSP1UniversalReceiverDelegate;
 
   // Set the URD for the vault
 
@@ -84,7 +86,7 @@ export const createVault = async (
 
   await km.methods.execute(executeVaultSetURD).send({
     from: controllerAddress,
-    gasLimit: 600_000,
+    gasLimit: DEFAULT_GAS,
   });
 
   console.log('Set URD for vault');
@@ -111,7 +113,7 @@ export const createVault = async (
 
   await km.methods.execute(executeProfileAddVault).send({
     from: controllerAddress,
-    gasLimit: 600_000,
+    gasLimit: DEFAULT_GAS,
   });
 
   console.log('Added vault to the profile');

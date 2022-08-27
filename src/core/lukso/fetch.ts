@@ -1,10 +1,9 @@
 import LSP7DigitalAsset from '@lukso/lsp-smart-contracts/artifacts/LSP7DigitalAsset.json';
 import LSP8IdentifiableDigitalAsset from '@lukso/lsp-smart-contracts/artifacts/LSP8IdentifiableDigitalAsset.json';
+import { INTERFACE_IDS } from '@lukso/lsp-smart-contracts/constants';
 import { useEffect, useState } from 'react';
 import type Web3 from 'web3';
 import type { AbiItem } from 'web3-utils';
-
-import { INTERFACE_IDS } from '@/utils/config';
 
 import { useWeb3Context } from '../web3';
 import type { AssetMap } from './asset';

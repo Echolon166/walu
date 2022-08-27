@@ -2,6 +2,8 @@ import UniversalProfile from '@lukso/lsp-smart-contracts/artifacts/UniversalProf
 import type Web3 from 'web3';
 import type { AbiItem } from 'web3-utils';
 
+import { DEFAULT_GAS } from '@/utils';
+
 import { getInstance, LSP6KeyManagerSchema } from './schemas';
 
 export const getPermissions = async (
@@ -55,7 +57,7 @@ export const getPermissions = async (
     permissionData.values
   ).send({
     from: address,
-    gasLimit: 600_000,
+    gasLimit: DEFAULT_GAS,
   });
 
   console.log(
