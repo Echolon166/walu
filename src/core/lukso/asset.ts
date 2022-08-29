@@ -1,23 +1,21 @@
+export type LinkJson = {
+  title: string;
+  url: string;
+};
+
+export type ImageJson = {
+  width: number;
+  height: number;
+  hashFunction: string;
+  hash: string;
+  url: string;
+};
+
 type Metadata = {
   description: string;
-  links: {
-    title: string;
-    url: string;
-  }[];
-  icon: {
-    width: number;
-    height: number;
-    hashFunction: string;
-    hash: string;
-    url: string;
-  }[];
-  images: {
-    width: number;
-    height: number;
-    hashFunction: string;
-    hash: string;
-    url: string;
-  }[];
+  links: LinkJson[];
+  icon: ImageJson[];
+  images: ImageJson[];
   assets: {
     hashFunction: string;
     hash: string;

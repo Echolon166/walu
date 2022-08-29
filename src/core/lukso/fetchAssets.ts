@@ -120,12 +120,12 @@ async function fetchAssets(web3: Web3, address: string, ownedAssets: string[]) {
   return [lsp7Assets, lsp8Assets];
 }
 
-export const useAssets = (): [AssetMap, boolean] => {
+export const useAssets = (address: string): [AssetMap, boolean] => {
   const [lsp7Assets, setLsp7Assets] = useState<Lsp7Asset[]>([]);
   const [lsp8Assets, setLsp8Assets] = useState<Lsp8Asset[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const { web3, address } = useWeb3Context();
+  const { web3 } = useWeb3Context();
 
   useEffect(() => {
     const fetchProfileAssets = async () => {
@@ -135,7 +135,7 @@ export const useAssets = (): [AssetMap, boolean] => {
         // Fetch the LSP5 data of the Universal Profile to get its owned assets
         const profile = getInstance(
           UniversalProfileSchema,
-          address as string,
+          address,
           web3?.currentProvider
         );
 

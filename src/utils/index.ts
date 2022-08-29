@@ -6,3 +6,4 @@ export {
   NETWORKS,
 } from './config';
 export type { NetworkInfo, NetworkType } from './network';
+export { ipfsLink } from './utils';

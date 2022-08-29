@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 
 import type { Lsp7Asset } from '@/core/lukso';
+import { ipfsLink } from '@/utils';
 
 type Props = {
   asset: Lsp7Asset;
@@ -43,12 +44,7 @@ export default function ListCard({
       <div className="flex items-center">
         <div className={classNames('rounded-full', variants[variant])}>
           <Image
-            src={
-              asset.metadata.icon[0]?.url.replace(
-                'ipfs://',
-                'https://ipfs.io/ipfs/'
-              ) ?? '/assets/images/lukso_white.svg'
-            }
+            src={ipfsLink(asset.metadata.icon[0]?.url)}
             alt={asset.name}
             width={handleImageSize(variant)}
             height={handleImageSize(variant)}

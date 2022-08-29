@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 
 import type { Lsp8Asset } from '@/core/lukso';
+import { ipfsLink } from '@/utils';
 
 import { AnchorLink } from './AnchorLink';
 import { Avatar } from './Avatar';
@@ -24,12 +25,7 @@ export default function CollectibleCard({
     >
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
         <Image
-          src={
-            collectible.lsp8Metadata.icon[0]?.url.replace(
-              'ipfs://',
-              'https://ipfs.io/ipfs/'
-            ) ?? '/assets/images/lukso_white.svg'
-          }
+          src={ipfsLink(collectible.lsp8Metadata.icon[0]?.url)}
           alt={collectible.name}
           placeholder="blur"
           blurDataURL="/assets/images/lukso_white.svg"
@@ -51,12 +47,7 @@ export default function CollectibleCard({
             {collectible.name}
           </div>
           <Avatar
-            image={
-              collectible.metadata.icon[0]?.url.replace(
-                'ipfs://',
-                'https://ipfs.io/ipfs/'
-              ) ?? '/assets/images/lukso_white.svg'
-            }
+            image={ipfsLink(collectible.metadata.icon[0]?.url)}
             alt={collectible.name}
             shape="rounded"
           />

@@ -9,34 +9,23 @@ import { Check } from '@/components/icons/Check';
 import { Copy } from '@/components/icons/Copy';
 import ProfileTab from '@/components/ProfileTab';
 import { useAssets } from '@/core/lukso';
-
-const data = {
-  address: '0xcb9gfhafhvbvcbdhghghgfshgfsh',
-  name: 'frozeman',
-  description: 'The inventor of ERC725 and ERC20...',
-  links: [
-    { title: '', url: 'https://twitter.com/feindura' },
-    { title: 'lukso.network', url: 'https://lukso.network' },
-  ],
-  avatar: [
-    {
-      hashFunction: 'keccak256(bytes)',
-      hash: '0x98fe032f81c43426fbcfb21c780c879667a08e2a65e8ae38027d4d61cdfe6f55',
-      url: 'ifps://QmPJESHbVkPtSaHntNVY5F6JDLW8v69M2d6khXEYGUMn7N',
-      fileType: 'fbx',
-    },
-  ],
-  tempImage: '/assets/images/temp-cover.jpg',
-};
+import { useProfile } from '@/core/lukso/fetchProfile';
+import { useWeb3Context } from '@/core/web3';
+import { ipfsLink } from '@/utils';
 
 const DashboardPage: NextPage = () => {
-  const [assets] = useAssets();
+  const { address } = useWeb3Context();
+
+  const [assets] = useAssets(address as string);
+  const [profile] = useProfile(address as string);
   console.log(assets.lsp7, assets.lsp8);
+  console.log(profile);
+
   const [copyButtonStatus, setCopyButtonStatus] = useState(false);
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention
   const [_, copyToClipboard] = useCopyToClipboard();
   const handleCopyToClipboard = () => {
-    copyToClipboard(data.address);
+    copyToClipboard(profile.address);
     setCopyButtonStatus(true);
     setTimeout(() => {
       setCopyButtonStatus(copyButtonStatus);
@@ -48,12 +37,15 @@ const DashboardPage: NextPage = () => {
       {/* Profile Background Image */}
       <div className="relative h-36 w-full overflow-hidden rounded-lg sm:h-44 md:h-64 xl:h-80 2xl:h-96 3xl:h-[448px]">
         <Image
-          src={data.tempImage}
+          src={ipfsLink(
+            profile.backgroundImage[0]?.url,
+            '/assets/images/placeholder-background.jpg'
+          )}
           placeholder="blur"
-          blurDataURL={data.tempImage}
+          blurDataURL={ipfsLink(profile.backgroundImage[0]?.url)}
           layout="fill"
           objectFit="cover"
-          alt="Cover Image"
+          alt="Profile Background Image"
         />
       </div>
 
@@ -63,8 +55,8 @@ const DashboardPage: NextPage = () => {
           {/* Profile Image */}
           <Avatar
             size="xl"
-            image={data.tempImage}
-            alt="User"
+            image={ipfsLink(profile.profileImage[0]?.url)}
+            alt="Profile Image"
             className="z-10 mx-auto -mt-12 dark:border-gray-500 sm:-mt-14 md:mx-0 md:-mt-16 xl:mx-0 3xl:-mt-20"
           />
         </div>
@@ -74,13 +66,13 @@ const DashboardPage: NextPage = () => {
             <div className="text-center">
               {/* Name */}
               <h2 className="text-xl font-medium tracking-tighter text-gray-900 dark:text-white xl:text-2xl">
-                {data.name || data.address}
+                {profile.name || (address && 'Anonymous')}
               </h2>
 
               {/* User Address */}
               <div className="mt-5 mb-10 inline-flex h-9 items-center rounded-full bg-white shadow-card dark:bg-light-dark xl:mt-6">
                 <div className="w-32 grow-0 truncate bg-center pl-4 text-xs text-gray-500 dark:text-gray-300 sm:w-40 sm:text-sm">
-                  {data.address}
+                  {profile.address}
                 </div>
                 <div
                   className="flex cursor-pointer items-center px-4 text-gray-500 transition hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -104,7 +96,7 @@ const DashboardPage: NextPage = () => {
                   Bio
                 </div>
                 <div className="text-sm leading-6 tracking-tighter text-gray-600 dark:text-gray-400">
-                  {data.description}
+                  {profile.description}
                 </div>
               </div>
               {/* Links */}
@@ -112,7 +104,7 @@ const DashboardPage: NextPage = () => {
                 <div className="mb-2 text-sm font-medium uppercase tracking-wider text-gray-900 dark:text-white">
                   Links
                 </div>
-                {data.links.map((item: any) => (
+                {profile.links.map((item: any) => (
                   <AnchorLink
                     href={item.url}
                     className="mb-2 flex items-center text-sm tracking-tight text-gray-600 transition last:mb-0 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white"
