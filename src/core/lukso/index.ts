@@ -1,3 +1,3 @@
 export { Lsp7Asset, Lsp8Asset } from './asset';
-export { useAssets } from './fetch';
+export { useAssets } from './fetchAssets';
 export { createVault, useVaults } from './vault';

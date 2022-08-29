@@ -55,13 +55,11 @@ export default function ListCard({
           />
         </div>
 
-        <div className="ltr:ml-2 rtl:mr-2">
-          <span className="block pt-0.5 text-xs font-normal capitalize text-gray-600 dark:text-gray-400">
-            {asset.name} ({asset.symbol})
-          </span>
-        </div>
+        <span className="ml-2 block pt-0.5 text-xs font-normal capitalize text-gray-600 dark:text-gray-400">
+          {asset.name} ({asset.symbol})
+        </span>
       </div>
-      <div className="overflow-hidden text-ellipsis -tracking-wider ltr:pl-2 rtl:pr-2">
+      <div className="overflow-hidden text-ellipsis pl-2 -tracking-wider">
         {asset.balance}
       </div>
     </div>

@@ -59,7 +59,7 @@ const DashboardPage: NextPage = () => {
 
       {/* Profile Container */}
       <div className="mx-auto flex w-full shrink-0 flex-col md:px-4 xl:px-6 3xl:max-w-[1700px] 3xl:px-12">
-        <div className="md:px-20 xl:px-24 3xl:px-28">
+        <div className="md:px-16 xl:px-16 3xl:px-20">
           {/* Profile Image */}
           <Avatar
             size="xl"
@@ -70,16 +70,16 @@ const DashboardPage: NextPage = () => {
         </div>
         {/* Profile Info */}
         <div className="flex w-full flex-col pt-4 md:flex-row md:pt-10 lg:flex-row xl:pt-12">
-          <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 md:w-72 ltr:md:border-r md:ltr:pr-7 rtl:md:border-l md:rtl:pl-7 lg:ltr:pr-10 lg:rtl:pl-10 xl:ltr:pr-14 xl:rtl:pl-14 2xl:w-80 3xl:w-96 3xl:ltr:pr-16 3xl:rtl:pl-16">
-            <div className="text-center ltr:md:text-left rtl:md:text-right">
+          <div className="shrink-0 border-dashed border-gray-200 dark:border-gray-700 md:w-72 md:border-r md:pr-7 lg:pr-10 xl:pr-14 2xl:w-80 3xl:w-96 3xl:pr-16">
+            <div className="text-center">
               {/* Name */}
               <h2 className="text-xl font-medium tracking-tighter text-gray-900 dark:text-white xl:text-2xl">
                 {data.name || data.address}
               </h2>
 
               {/* User Address */}
-              <div className="mt-5 inline-flex h-9 items-center rounded-full bg-white shadow-card dark:bg-light-dark xl:mt-6">
-                <div className="w-32 grow-0 truncate bg-center text-xs text-gray-500 ltr:pl-4 rtl:pr-4 dark:text-gray-300 sm:w-40 sm:text-sm">
+              <div className="mt-5 mb-10 inline-flex h-9 items-center rounded-full bg-white shadow-card dark:bg-light-dark xl:mt-6">
+                <div className="w-32 grow-0 truncate bg-center pl-4 text-xs text-gray-500 dark:text-gray-300 sm:w-40 sm:text-sm">
                   {data.address}
                 </div>
                 <div
@@ -125,7 +125,7 @@ const DashboardPage: NextPage = () => {
             </div>
           </div>
 
-          <div className="grow pt-6 pb-9 md:-mt-2.5 md:pt-1.5 md:pb-0 md:ltr:pl-7 md:rtl:pr-7 lg:ltr:pl-10 lg:rtl:pr-10 xl:ltr:pl-14 xl:rtl:pr-14 3xl:ltr:pl-16 3xl:rtl:pr-16">
+          <div className="grow pt-6 pb-9 md:-mt-2.5 md:pt-1.5 md:pb-0 md:pl-7 lg:pl-10 xl:pl-14 3xl:pl-16">
             <ProfileTab assets={assets} />
           </div>
         </div>

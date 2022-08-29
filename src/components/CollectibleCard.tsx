@@ -77,7 +77,7 @@ export default function CollectibleCard({
               height={24}
               className="rounded-full"
             />
-            <div className="truncate text-sm -tracking-wide text-white ltr:ml-2 ltr:pr-2 rtl:mr-2 rtl:pl-2">
+            <div className="ml-2 truncate pr-2 text-sm -tracking-wide text-white">
               @{collectible.creators[0] ?? ''}
             </div>
           </AnchorLink>

@@ -29,7 +29,7 @@ function Header() {
         />
       </Head>
       <header>
-        <nav className="absolute top-0 z-30 flex h-16 w-full items-center justify-between bg-body px-4 transition-all duration-300 ltr:right-0 rtl:left-0 dark:bg-dark sm:h-24 sm:px-6 lg:px-8 xl:px-10 3xl:px-12">
+        <nav className="absolute top-0 right-0 z-30 flex h-16 w-full items-center justify-between bg-body px-4 transition-all duration-300 dark:bg-dark sm:h-24 sm:px-6 lg:px-8 xl:px-10 3xl:px-12">
           <div className="flex items-center">
             <Logo />
           </div>
