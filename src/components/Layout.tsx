@@ -1,44 +1,62 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import type { ReactNode } from 'react';
+
+import { Logo } from './Logo';
+import { Web3Button } from './Web3Button';
 
 type Props = {
   children?: ReactNode;
   title?: string;
 };
 
-const Header = () => (
-  <>
-    <Head>
-      <title>Walu</title>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    </Head>
-    <header>
-      <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-        |{' '}
-        <Link href="/dashboard">
-          <a>Dashboard</a>
-        </Link>
-      </nav>
-    </header>
-  </>
-);
+function HeaderRightArea() {
+  return (
+    <div className="order-last flex shrink-0 items-center">
+      <Web3Button />
+    </div>
+  );
+}
 
-const Footer = () => (
-  <footer>
-    <hr />
-    <span>I&quot;m here to stay (Footer)</span>
-  </footer>
-);
+function Header() {
+  return (
+    <>
+      <Head>
+        <title>Walu</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1 maximum-scale=1"
+          charSet='="utf-8'
+        />
+      </Head>
+      <header>
+        <nav className="absolute top-0 z-30 flex h-16 w-full items-center justify-between bg-body px-4 transition-all duration-300 ltr:right-0 rtl:left-0 dark:bg-dark sm:h-24 sm:px-6 lg:px-8 xl:px-10 3xl:px-12">
+          <div className="flex items-center">
+            <Logo />
+          </div>
+          <HeaderRightArea />
+        </nav>
+      </header>
+    </>
+  );
+}
 
-export const Layout = ({ children }: Props) => (
-  <div className="grid place-items-center">
-    <Header></Header>
-    {children}
-    <Footer></Footer>
-  </div>
-);
+function Footer() {
+  return (
+    <footer className="container mx-auto px-6 pb-4 sm:pb-6">
+      <hr />
+      <span>I&quot;m here to stay (Footer)</span>
+    </footer>
+  );
+}
+
+export default function Layout({ children }: Props) {
+  return (
+    <div className="flex min-h-screen flex-col bg-white dark:bg-dark">
+      <Header />
+      <main className="min-h-[100vh] px-4 pt-24 pb-4 sm:px-6 sm:pb-6 lg:px-8 xl:px-10 xl:pb-10 3xl:px-12">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+}

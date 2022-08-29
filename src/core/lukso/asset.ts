@@ -47,9 +47,9 @@ class Asset {
 }
 
 export class Lsp7Asset extends Asset {
-  balance?: number;
+  balance: number;
 
-  constructor(contractAddress: string, rawAsset: any, balance?: number) {
+  constructor(contractAddress: string, rawAsset: any, balance: number) {
     super(contractAddress, rawAsset);
 
     this.balance = balance;

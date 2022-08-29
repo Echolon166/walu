@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 
-import { Web3Address, Web3Button } from '@/components';
+import { Web3Address } from '@/components/Web3Address';
+import { Web3Button } from '@/components/Web3Button';
 
 const IndexPage: NextPage = () => (
   <>

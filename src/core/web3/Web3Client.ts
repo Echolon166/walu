@@ -70,6 +70,12 @@ export const useWeb3 = () => {
       dispatch({
         type: 'RESET_WEB3_PROVIDER',
       } as Web3Action);
+
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      } else {
+        console.log('window is undefined');
+      }
     } else {
       console.error('No Web3Modal');
     }

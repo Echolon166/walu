@@ -1,21 +1,18 @@
 @tailwind base;
-
-a {
-  @apply text-blue-700;
-}
-
-a:hover {
-  @apply border-b-2 border-blue-700;
-}
-
 @tailwind components;
-
 @tailwind utilities;
-
-.content p {
-  @apply my-6;
-}
-
-.content ul {
-  @apply my-6;
+@layer base {
+  :root {
+    --color-brand: 17 24 39;
+  }
+  html,
+  body {
+    @apply bg-body font-body antialiased dark:bg-dark dark:text-white;
+  }
+  .dynamic-html h6 {
+    @apply font-medium uppercase;
+  }
+  .dynamic-html p {
+    @apply mb-3;
+  }
 }

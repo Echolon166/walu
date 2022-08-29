@@ -1,21 +1,20 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
-import type { Lsp7Asset } from '@/core/lukso';
+import ProfileTab from '@/components/ProfileTab';
 import { useAssets } from '@/core/lukso';
 
 const AssetsPage: NextPage = () => {
   const [assets, loading] = useAssets();
   console.log(loading, assets.lsp7);
+  console.log(loading, assets.lsp8);
 
   return (
     <>
       <h1>Assets</h1>
       <Link href="/dashboard/collectibles">Collectibles</Link>
       <Link href="/dashboard/vaults">Vaults</Link>
-      {assets.lsp7.map((asset: Lsp7Asset) => {
-        return <li key={asset.contractAddress}>{asset.name}</li>;
-      })}
+      <ProfileTab assets={assets} />
     </>
   );
 };

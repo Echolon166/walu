@@ -1,5 +1,7 @@
 import { useWeb3Context } from '@/core/web3';
 
+import Button from './Button';
+
 type ConnectProps = {
   connect: (() => Promise<void>) | null;
 };
@@ -10,16 +12,20 @@ type DisconnectProps = {
 
 const ConnectButton = ({ connect }: ConnectProps) =>
   connect ? (
-    <button onClick={connect}>Connect</button>
+    <Button onClick={connect} className="shadow-main hover:shadow-large">
+      CONNECT
+    </Button>
   ) : (
-    <button>Loading...</button>
+    <Button className="shadow-main hover:shadow-large">Loading...</Button>
   );
 
 const DisconnectButton = ({ disconnect }: DisconnectProps) =>
   disconnect ? (
-    <button onClick={disconnect}>Disconnect</button>
+    <Button onClick={disconnect} className="shadow-main hover:shadow-large">
+      DISCONNECT
+    </Button>
   ) : (
-    <button>Loading...</button>
+    <Button className="shadow-main hover:shadow-large">Loading...</Button>
   );
 
 export function Web3Button() {
