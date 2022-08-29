@@ -25,7 +25,7 @@ export default function CollectibleCard({
     >
       <div className="relative flex aspect-[8/11] w-full justify-center overflow-hidden rounded-lg">
         <Image
-          src={ipfsLink(collectible.lsp8Metadata.icon[0]?.url)}
+          src={ipfsLink(collectible.lsp8Metadata?.icon[0]?.url)}
           alt={collectible.name}
           placeholder="blur"
           blurDataURL="/assets/images/lukso_white.svg"
@@ -47,7 +47,7 @@ export default function CollectibleCard({
             {collectible.name}
           </div>
           <Avatar
-            image={ipfsLink(collectible.metadata.icon[0]?.url)}
+            image={ipfsLink(collectible.metadata?.icon[0]?.url)}
             alt={collectible.name}
             shape="rounded"
           />

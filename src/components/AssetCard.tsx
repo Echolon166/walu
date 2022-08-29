@@ -44,7 +44,7 @@ export default function ListCard({
       <div className="flex items-center">
         <div className={classNames('rounded-full', variants[variant])}>
           <Image
-            src={ipfsLink(asset.metadata.icon[0]?.url)}
+            src={ipfsLink(asset.metadata?.icon[0]?.url)}
             alt={asset.name}
             width={handleImageSize(variant)}
             height={handleImageSize(variant)}

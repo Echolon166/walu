@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 
-import { useWeb3 } from './web3Client';
+import { useWeb3 } from './Web3Client';
 import type { Web3ProviderState } from './web3Provider';
 import { web3InitialState } from './web3Provider';
 
