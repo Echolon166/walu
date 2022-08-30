@@ -1,15 +1,17 @@
 import type { Lsp7Asset, Lsp8Asset } from '@/core/lukso';
 
-import ListCard from './AssetCard';
+import AssetCard from './AssetCard';
 import CollectibleCard from './CollectibleCard';
 import { TabPanel } from './Tab';
 import TabParam from './TabParam';
+import VaultCard from './VaultCard';
 
 type Props = {
   assets: any;
+  vaults: any;
 };
 
-export default function ProfileTab({ assets }: Props) {
+export default function ProfileTab({ assets, vaults }: Props) {
   return (
     <TabParam
       tabMenu={[
@@ -27,7 +29,7 @@ export default function ProfileTab({ assets }: Props) {
       <TabPanel className="focus:outline-none">
         <div className="grid grid-cols-1 gap-3">
           {assets.lsp7.map((asset: Lsp7Asset) => (
-            <ListCard asset={asset} key={asset.contractAddress} />
+            <AssetCard asset={asset} key={asset.contractAddress} />
           ))}
         </div>
       </TabPanel>
@@ -41,7 +43,13 @@ export default function ProfileTab({ assets }: Props) {
           ))}
         </div>
       </TabPanel>
-      <TabPanel className="focus:outline-none"></TabPanel>
+      <TabPanel className="focus:outline-none">
+        <div className="grid grid-cols-1 gap-3">
+          {vaults.map((vault: string) => (
+            <VaultCard vaultAddress={vault} key={vault} />
+          ))}
+        </div>
+      </TabPanel>
     </TabParam>
   );
 }

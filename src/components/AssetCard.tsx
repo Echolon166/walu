@@ -29,7 +29,7 @@ function handleImageSize(variant: string) {
   return size;
 }
 
-export default function ListCard({
+export default function AssetCard({
   asset,
   className = 'p-3 tracking-wider rounded-lg sm:p-4',
   variant = 'small',

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { useWeb3Context } from '../web3';
-import { Profile } from './profile';
 import { getInstance, UniversalProfileSchema } from './schemas';
+import { Profile } from './types';
 
 export const useProfile = (address: string): [Profile] => {
   const [profile, setProfile] = useState<Profile>(new Profile('', ''));

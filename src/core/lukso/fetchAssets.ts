@@ -6,14 +6,14 @@ import type Web3 from 'web3';
 import type { AbiItem } from 'web3-utils';
 
 import { useWeb3Context } from '../web3';
-import type { AssetMap } from './asset';
-import { Lsp7Asset, Lsp8Asset } from './asset';
 import {
   getInstance,
   LSP4Schema,
   LSP8IdentifiableDigitalAssetSchema,
   UniversalProfileSchema,
 } from './schemas';
+import type { AssetMap } from './types';
+import { Lsp7Asset, Lsp8Asset } from './types';
 
 async function fetchAssets(web3: Web3, address: string, ownedAssets: string[]) {
   async function fetchAssetMetadata(ownedAsset: string) {

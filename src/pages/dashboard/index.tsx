@@ -8,7 +8,7 @@ import { Avatar } from '@/components/Avatar';
 import { Check } from '@/components/icons/Check';
 import { Copy } from '@/components/icons/Copy';
 import ProfileTab from '@/components/ProfileTab';
-import { useAssets } from '@/core/lukso';
+import { useAssets, useVaults } from '@/core/lukso';
 import { useProfile } from '@/core/lukso/fetchProfile';
 import { useWeb3Context } from '@/core/web3';
 import { ipfsLink } from '@/utils';
@@ -17,9 +17,11 @@ const DashboardPage: NextPage = () => {
   const { address } = useWeb3Context();
 
   const [assets] = useAssets(address as string);
+  const [vaults] = useVaults();
   const [profile] = useProfile(address as string);
   console.log(assets.lsp7, assets.lsp8);
   console.log(profile);
+  console.log(vaults);
 
   const [copyButtonStatus, setCopyButtonStatus] = useState(false);
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention
@@ -118,7 +120,7 @@ const DashboardPage: NextPage = () => {
           </div>
 
           <div className="grow pt-6 pb-9 md:-mt-2.5 md:pt-1.5 md:pb-0 md:pl-7 lg:pl-10 xl:pl-14 3xl:pl-16">
-            <ProfileTab assets={assets} />
+            <ProfileTab assets={assets} vaults={vaults} />
           </div>
         </div>
       </div>
