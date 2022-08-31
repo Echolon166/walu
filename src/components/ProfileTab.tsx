@@ -80,7 +80,7 @@ export default function ProfileTab({
               ))}
             </div>
           )}
-          {web3 && (
+          {web3 && createdAssets.lsp7.length ? (
             <div>
               <div className="my-4 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
                 Your Creations
@@ -94,6 +94,8 @@ export default function ProfileTab({
                 />
               ))}
             </div>
+          ) : (
+            <div />
           )}
         </div>
       </TabPanel>
@@ -114,11 +116,7 @@ export default function ProfileTab({
             ))}
           </div>
         )}
-        {web3 && !assets.lsp8.length ? (
-          <div className="mb-6 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
-            Empty
-          </div>
-        ) : (
+        {web3 && createdAssets.lsp8.length ? (
           <div>
             <div className="my-4 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
               Your Creations
@@ -134,6 +132,8 @@ export default function ProfileTab({
               ))}
             </div>
           </div>
+        ) : (
+          <div />
         )}
       </TabPanel>
       <TabPanel className="focus:outline-none">
