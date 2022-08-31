@@ -16,7 +16,9 @@ import { ipfsLink } from '@/utils';
 const IndexPage: NextPage = () => {
   const { address } = useWeb3Context();
 
-  const [assets, setAssets] = useAssets(address as string);
+  const [assets, setAssets, createdAssets, setCreatedAssets] = useAssets(
+    address as string
+  );
   const [vaults, setVaults] = useVaults();
   const [profile] = useProfile(address as string);
 
@@ -120,6 +122,8 @@ const IndexPage: NextPage = () => {
             <ProfileTab
               assets={assets}
               setAssets={setAssets}
+              createdAssets={createdAssets}
+              setCreatedAssets={setCreatedAssets}
               vaults={vaults}
               setVaults={setVaults}
             />

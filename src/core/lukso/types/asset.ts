@@ -24,7 +24,7 @@ type Metadata = {
   }[];
 };
 
-class Asset {
+export class Asset {
   contractAddress: string;
 
   name: string;
@@ -75,4 +75,9 @@ export class Lsp8Asset extends Asset {
 export type AssetMap = {
   lsp7: Lsp7Asset[];
   lsp8: Lsp8Asset[];
+};
+
+export type CreatedAssetMap = {
+  lsp7: Asset[];
+  lsp8: Asset[];
 };

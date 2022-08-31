@@ -3,11 +3,14 @@ import type Web3 from 'web3';
 
 import type { AssetMap, Lsp7Asset, Lsp8Asset } from '@/core/lukso';
 import { checkPermissions, createVault } from '@/core/lukso';
+import type { Asset, CreatedAssetMap } from '@/core/lukso/types/asset';
 import { useWeb3Context } from '@/core/web3';
 
 import AssetCard from './AssetCard';
 import Button from './Button';
 import CollectibleCard from './CollectibleCard';
+import IssuedAssetCard from './IssuedAssetCard';
+import IssuedCollectibleCard from './IssuedCollectibleCard';
 import { TabPanel } from './Tab';
 import TabParam from './TabParam';
 import VaultCard from './VaultCard';
@@ -15,6 +18,8 @@ import VaultCard from './VaultCard';
 type Props = {
   assets: AssetMap;
   setAssets: any;
+  createdAssets: CreatedAssetMap;
+  setCreatedAssets: any;
   vaults: string[];
   setVaults: any;
 };
@@ -22,6 +27,8 @@ type Props = {
 export default function ProfileTab({
   assets,
   setAssets,
+  createdAssets,
+  setCreatedAssets,
   vaults,
   setVaults,
 }: Props) {
@@ -73,6 +80,21 @@ export default function ProfileTab({
               ))}
             </div>
           )}
+          {web3 && (
+            <div>
+              <div className="my-4 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
+                Your Creations
+              </div>
+              {createdAssets.lsp7.map((asset: Asset) => (
+                <IssuedAssetCard
+                  asset={asset}
+                  assets={createdAssets.lsp7}
+                  setAssets={setCreatedAssets.setLsp7}
+                  key={asset.contractAddress}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </TabPanel>
       <TabPanel className="focus:outline-none">
@@ -90,6 +112,27 @@ export default function ProfileTab({
                 key={`${collectible.contractAddress}/${collectible.id}`}
               />
             ))}
+          </div>
+        )}
+        {web3 && !assets.lsp8.length ? (
+          <div className="mb-6 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
+            Empty
+          </div>
+        ) : (
+          <div>
+            <div className="my-4 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
+              Your Creations
+            </div>
+            <div className="grid gap-4 xs:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 lg:gap-5 xl:gap-6 3xl:grid-cols-3 4xl:grid-cols-4">
+              {createdAssets.lsp8.map((collectible: Asset) => (
+                <IssuedCollectibleCard
+                  collectible={collectible}
+                  collectibles={assets.lsp8}
+                  setCollectibles={setAssets.setLsp8}
+                  key={`${collectible.contractAddress}`}
+                />
+              ))}
+            </div>
           </div>
         )}
       </TabPanel>

@@ -8,6 +8,8 @@ import type { AbiItem } from 'web3-utils';
 
 import { DEFAULT_GAS } from '@/utils';
 
+import { checkPermissions, grantPermissions } from './permission';
+
 // https://docs.lukso.tech/standards/smart-contracts/lsp7-digital-asset/#transfer
 export const transferLSP7Asset = async (
   web3: Web3,
@@ -34,6 +36,11 @@ export const transferLSP7Asset = async (
       .send({ from: address });
     // Transfer from vault
   } else {
+    if (!(await checkPermissions(web3, address, controllerAddress as string))) {
+      // Grant permissions if required permissions does not exist
+      await grantPermissions(web3, address, controllerAddress as string);
+    }
+
     const vault = new web3.eth.Contract(LSP9Vault.abi as AbiItem[], from);
     const up = new web3.eth.Contract(
       UniversalProfile.abi as AbiItem[],
@@ -89,6 +96,11 @@ export const transferLSP8Asset = async (
       .send({ from: address });
     // Transfer from vault
   } else {
+    if (!(await checkPermissions(web3, address, controllerAddress as string))) {
+      // Grant permissions if required permissions does not exist
+      await grantPermissions(web3, address, controllerAddress as string);
+    }
+
     const vault = new web3.eth.Contract(LSP9Vault.abi as AbiItem[], from);
     const up = new web3.eth.Contract(
       UniversalProfile.abi as AbiItem[],

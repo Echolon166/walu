@@ -14,6 +14,12 @@ Video Demo: [Youtube]()
 
 ## Development
 
+- Clone the repository
+
+```shell
+git clone https://github.com/Echolon166/walu.git
+```
+
 - Create a .env.local file and save the controller private key of the app
   - Example can be found here: [.env.example](.env.example)
 
@@ -26,9 +32,15 @@ Video Demo: [Youtube]()
 ```shell
 yarn
 ```
+
 - Run the development server
 
 ```shell
 yarn dev
 ```
+
+### Known Issues
+
+- Minted tokens doesn't update UI without refreshing manually
+- Sending tokens from vaults doesn't update other vaults & main account
 

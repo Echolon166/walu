@@ -4,10 +4,12 @@ import type Web3 from 'web3';
 import {
   Lsp7Asset,
   Lsp8Asset,
+  mintLsp7Asset,
   transferLSP7Asset,
   transferLSP8Asset,
   transferLYX,
 } from '@/core/lukso';
+import { Asset } from '@/core/lukso/types';
 import { useWeb3Context } from '@/core/web3';
 import { LYX_ADDRESS } from '@/utils/config';
 
@@ -17,7 +19,7 @@ import type { ListboxOption } from './Listbox';
 import Listbox from './Listbox';
 
 type ActionFieldsProps = {
-  asset: Lsp7Asset | Lsp8Asset;
+  asset: Asset | Lsp7Asset | Lsp8Asset;
   assets: any;
   setAssets: any;
   actions: ListboxOption[];
@@ -28,7 +30,7 @@ type ActionFieldsProps = {
 async function executeActions(
   web3: Web3,
   accountAddress: string,
-  asset: Lsp7Asset | Lsp8Asset,
+  asset: Asset | Lsp7Asset | Lsp8Asset,
   assets: any,
   setAssets: any,
   actionType: string,
@@ -36,8 +38,12 @@ async function executeActions(
   controllerAddress?: string,
   vaultAddress?: string
 ) {
-  const [transferToAddressParams, transferToVaultParams, transferToMainParams] =
-    parameters;
+  const [
+    transferToAddressParams,
+    transferToVaultParams,
+    transferToMainParams,
+    mintParams,
+  ] = parameters;
 
   let toAddress = '';
   let amount = '';
@@ -48,6 +54,8 @@ async function executeActions(
     [toAddress, amount] = transferToVaultParams;
   } else if (actionType === 'transferToMain') {
     [toAddress, amount] = transferToMainParams;
+  } else if (actionType === 'mint') {
+    [toAddress, amount] = mintParams;
   }
 
   if (asset instanceof Lsp7Asset) {
@@ -98,6 +106,8 @@ async function executeActions(
     );
 
     setAssets(newAssets);
+  } else if (asset instanceof Asset) {
+    await mintLsp7Asset(web3, accountAddress, asset.contractAddress, amount);
   }
 }
 
@@ -201,6 +211,27 @@ export function ActionFields({
               )}
             </div>
           )}
+          {actionType.value === 'mint' && (
+            <div className="grid">
+              <div className="ml-1 mt-4 inline-block w-full text-[13px] xs:ml-6 sm:ml-12 sm:w-80">
+                <span className="block text-xs font-medium tracking-widest dark:text-gray-100 sm:text-sm">
+                  Address
+                </span>
+              </div>
+              <div className="ml-1 mt-4 inline-block w-full text-[13px] xs:ml-6 sm:ml-12 sm:w-80">
+                <span className="block text-xs font-medium tracking-widest dark:text-gray-100 sm:text-sm">
+                  {address}
+                </span>
+              </div>
+              <Input
+                label="Amount"
+                className="mt-4 xs:ml-6 sm:ml-12"
+                useUppercaseLabel={false}
+                placeholder="0"
+                ref={amountRef}
+              />
+            </div>
+          )}
         </>
       </div>
       <div className="mt-2 flex justify-end xs:mt-3">
@@ -216,6 +247,7 @@ export function ActionFields({
               [
                 [addressRef.current?.value, amountRef.current?.value],
                 [vault.value, amountRef.current?.value],
+                [address, amountRef.current?.value],
                 [address, amountRef.current?.value],
               ],
               controllerAddress as string,
