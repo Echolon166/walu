@@ -17,7 +17,7 @@ const DashboardPage: NextPage = () => {
   const { address } = useWeb3Context();
 
   const [assets, setAssets] = useAssets(address as string);
-  const [vaults] = useVaults();
+  const [vaults, setVaults] = useVaults();
   const [profile] = useProfile(address as string);
   console.log(assets.lsp7, assets.lsp8);
   console.log(profile);
@@ -120,7 +120,12 @@ const DashboardPage: NextPage = () => {
           </div>
 
           <div className="grow pt-6 pb-9 md:-mt-2.5 md:pt-1.5 md:pb-0 md:pl-7 lg:pl-10 xl:pl-14 3xl:pl-16">
-            <ProfileTab assets={assets} setAssets={setAssets} vaults={vaults} />
+            <ProfileTab
+              assets={assets}
+              setAssets={setAssets}
+              vaults={vaults}
+              setVaults={setVaults}
+            />
           </div>
         </div>
       </div>

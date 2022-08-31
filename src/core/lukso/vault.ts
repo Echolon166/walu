@@ -10,16 +10,22 @@ import type { AbiItem } from 'web3-utils';
 import { DEFAULT_GAS, DEFAULT_GAS_PRICE } from '@/utils';
 
 import { useWeb3Context } from '../web3';
-import { getPermissions } from './permission';
+import { checkPermissions, grantPermissions } from './permission';
 import { getInstance, LSP10ReceivedVaultsSchema } from './schemas';
 
 export const createVault = async (
   web3: Web3,
   address: string,
   controllerAddress: string,
-  ownedVaults: string[]
+  ownedVaults: string[],
+  setVaults: any
 ) => {
-  await getPermissions(web3, address, controllerAddress);
+  // Check permissions
+
+  if (!(await checkPermissions(web3, address, controllerAddress))) {
+    // Grant permissions if required permissions does not exist
+    await grantPermissions(web3, address, controllerAddress);
+  }
 
   let vaultAddress: string | undefined = '';
   let URDAddress: string | undefined = '';
@@ -116,22 +122,21 @@ export const createVault = async (
     gasLimit: DEFAULT_GAS,
   });
 
+  setVaults([...ownedVaults, vaultAddress]);
+
   console.log('Added vault to the profile');
 
   return vaultAddress;
 };
 
-export const useVaults = (): [string[], any, boolean] => {
+export const useVaults = (): [string[], any] => {
   const [vaults, setVaults] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const { web3, address } = useWeb3Context();
 
   useEffect(() => {
     const fetchProfileVaults = async () => {
       try {
-        setLoading(true);
-
         // Fetch the LSP5 data of the Universal Profile to get its owned assets
         const profile = getInstance(
           LSP10ReceivedVaultsSchema,
@@ -151,5 +156,5 @@ export const useVaults = (): [string[], any, boolean] => {
     fetchProfileVaults();
   }, [address]);
 
-  return [vaults, setVaults, loading];
+  return [vaults, setVaults];
 };

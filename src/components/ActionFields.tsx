@@ -1,9 +1,15 @@
 import { createRef, useState } from 'react';
 import type Web3 from 'web3';
 
-import { Lsp7Asset, Lsp8Asset } from '@/core/lukso';
-import { transferLSP7Asset, transferLSP8Asset } from '@/core/lukso/transfer';
+import {
+  Lsp7Asset,
+  Lsp8Asset,
+  transferLSP7Asset,
+  transferLSP8Asset,
+  transferLYX,
+} from '@/core/lukso';
 import { useWeb3Context } from '@/core/web3';
+import { LYX_ADDRESS } from '@/utils/config';
 
 import Button from './Button';
 import { Input } from './Input';
@@ -45,15 +51,26 @@ async function executeActions(
   }
 
   if (asset instanceof Lsp7Asset) {
-    await transferLSP7Asset(
-      web3,
-      accountAddress,
-      vaultAddress || accountAddress,
-      toAddress,
-      asset.contractAddress,
-      amount,
-      controllerAddress
-    );
+    if (asset.contractAddress === LYX_ADDRESS) {
+      await transferLYX(
+        web3,
+        accountAddress,
+        vaultAddress || accountAddress,
+        toAddress,
+        amount,
+        controllerAddress
+      );
+    } else {
+      await transferLSP7Asset(
+        web3,
+        accountAddress,
+        vaultAddress || accountAddress,
+        toAddress,
+        asset.contractAddress,
+        amount,
+        controllerAddress
+      );
+    }
 
     const index = assets.indexOf(asset);
     const newAssets = assets.slice(0);

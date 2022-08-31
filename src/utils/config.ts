@@ -25,3 +25,5 @@ export const NETWORKS: { [K in NetworkType]: NetworkInfo } = {
 };
 
 export const DEFAULT_NETWORK_CONFIG = NETWORKS[DEFAULT_NETWORK];
+
+export const LYX_ADDRESS = '0x0000000000000000000000000000000000000000';

@@ -68,8 +68,7 @@ export default function AssetCard({
           <div className="flex basis-5/12 justify-end overflow-hidden text-ellipsis -tracking-wider">
             {parseFloat(asset.balance)
               .toFixed(8)
-              .replace(/[.,]00000000$/, '')
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              .replace(/[.,]00000000$/, '')}
           </div>
           <div className="flex basis-1/12 justify-end">
             <ChevronDown />

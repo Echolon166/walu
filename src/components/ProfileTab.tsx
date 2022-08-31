@@ -1,7 +1,12 @@
-import type { Lsp7Asset, Lsp8Asset } from '@/core/lukso';
-import type { AssetMap } from '@/core/lukso/types';
+import { useEffect, useState } from 'react';
+import type Web3 from 'web3';
+
+import type { AssetMap, Lsp7Asset, Lsp8Asset } from '@/core/lukso';
+import { checkPermissions, createVault } from '@/core/lukso';
+import { useWeb3Context } from '@/core/web3';
 
 import AssetCard from './AssetCard';
+import Button from './Button';
 import CollectibleCard from './CollectibleCard';
 import { TabPanel } from './Tab';
 import TabParam from './TabParam';
@@ -11,9 +16,31 @@ type Props = {
   assets: AssetMap;
   setAssets: any;
   vaults: string[];
+  setVaults: any;
 };
 
-export default function ProfileTab({ assets, setAssets, vaults }: Props) {
+export default function ProfileTab({
+  assets,
+  setAssets,
+  vaults,
+  setVaults,
+}: Props) {
+  const [isPermissioned, setIsPermissioned] = useState(false);
+
+  const { web3, address, controllerAddress } = useWeb3Context();
+
+  useEffect(() => {
+    if (web3) {
+      checkPermissions(
+        web3 as Web3,
+        address as string,
+        controllerAddress as string
+      ).then((response) => {
+        setIsPermissioned(response);
+      });
+    }
+  }, [web3]);
+
   return (
     <TabParam
       tabMenu={[
@@ -30,7 +57,7 @@ export default function ProfileTab({ assets, setAssets, vaults }: Props) {
     >
       <TabPanel className="focus:outline-none">
         <div className="grid grid-cols-1 gap-3">
-          {!assets.lsp7.length ? (
+          {web3 && !assets.lsp7.length ? (
             <div className="mb-6 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
               Empty
             </div>
@@ -49,7 +76,7 @@ export default function ProfileTab({ assets, setAssets, vaults }: Props) {
         </div>
       </TabPanel>
       <TabPanel className="focus:outline-none">
-        {!assets.lsp8.length ? (
+        {web3 && !assets.lsp8.length ? (
           <div className="mb-6 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
             Empty
           </div>
@@ -67,11 +94,44 @@ export default function ProfileTab({ assets, setAssets, vaults }: Props) {
         )}
       </TabPanel>
       <TabPanel className="focus:outline-none">
-        <div className="grid grid-cols-1 gap-3">
-          {vaults.map((vault: string) => (
-            <VaultCard vaultAddress={vault} key={vault} />
-          ))}
-        </div>
+        {web3 && (
+          <div>
+            {isPermissioned || (
+              <sup className="inline-block text-sm text-red-500 ltr:ml-1 rtl:mr-1">
+                Please give permissions to app controller to be able to manage
+                vaults:
+              </sup>
+            )}
+
+            {!vaults.length ? (
+              <div className="mb-6 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
+                Empty
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-3">
+                {vaults.map((vault: string) => (
+                  <VaultCard vaultAddress={vault} key={vault} />
+                ))}
+              </div>
+            )}
+            <div className="mt-4 flex justify-center xs:mt-3">
+              <Button
+                onClick={async () =>
+                  createVault(
+                    web3 as Web3,
+                    address as string,
+                    controllerAddress as string,
+                    vaults,
+                    setVaults
+                  )
+                }
+                variant="ghost"
+              >
+                Create New Vault
+              </Button>
+            </div>
+          </div>
+        )}
       </TabPanel>
     </TabParam>
   );

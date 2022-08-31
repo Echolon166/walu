@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 import type Web3 from 'web3';
 import type { AbiItem } from 'web3-utils';
 
-import { useWeb3Context } from '../web3';
+import { LYX_ADDRESS } from '@/utils/config';
+
+import { getAccountBalance, useWeb3Context } from '../web3';
 import {
   getInstance,
   LSP4Schema,
@@ -88,6 +90,51 @@ async function fetchAssets(web3: Web3, address: string, ownedAssets: string[]) {
     return null;
   }
 
+  async function getLYXAsLsp7() {
+    const balance = await getAccountBalance(web3!, address!);
+
+    const lyxAsLsp7Asset = new Lsp7Asset(
+      LYX_ADDRESS,
+      [
+        '',
+        { value: 'Lukso' },
+        { value: 'LYX' },
+        {
+          value: {
+            LSP4Metadata: {
+              assets: [],
+              description: 'Lukso Coin',
+              icon: [
+                {
+                  hash: '0x9037e140306b26cf4caefd068ffb05d53ee6be94a895d5ef946d17d9417360c5',
+                  hashFunction: 'keccak256(bytes)',
+                  height: 200,
+                  url: 'ipfs://QmSuiYJre6n7Ar2cKCYWSF6zfkbw3YVaCPrVeq4Sd4323E',
+                  width: 200,
+                },
+                {
+                  hash: '0xc3c9223718bae55c9f2292d0a093e25a069f8cce71db3807bf211214bb2eab5c',
+                  hashFunction: 'keccak256(bytes)',
+                  height: 32,
+                  url: 'ipfs://QmVYxcnRc99dgV1Y9GEeuE4xYLC23PqJKqotcjPGcpot5c',
+                  width: 32,
+                },
+              ],
+              images: [],
+              links: [
+                { title: 'Lukso Website', url: 'https://lukso.network/' },
+              ],
+            },
+          },
+        },
+        { value: {} },
+      ],
+      balance
+    );
+
+    return lyxAsLsp7Asset;
+  }
+
   const rawAssetCollections = await Promise.all(
     ownedAssets.map((ownedAsset: string) => fetchDetails(ownedAsset))
   );
@@ -116,6 +163,9 @@ async function fetchAssets(web3: Web3, address: string, ownedAssets: string[]) {
       }
     })
   );
+
+  const lyx = await getLYXAsLsp7();
+  lsp7Assets.unshift(lyx);
 
   return [lsp7Assets, lsp8Assets];
 }

@@ -15,7 +15,10 @@ type Props = {
 
 export default function VaultCard({ vaultAddress, className = '' }: Props) {
   const [assets, setAssets] = useAssets(vaultAddress);
-  console.log(vaultAddress, assets);
+  const filteredAssets = {
+    lsp7: assets.lsp7.filter((asset) => parseFloat(asset.balance) !== 0),
+    lsp8: assets.lsp8,
+  };
 
   return (
     <Disclosure
@@ -30,13 +33,13 @@ export default function VaultCard({ vaultAddress, className = '' }: Props) {
         </div>
       }
       panel={
-        !assets.lsp7.length && !assets.lsp8.length ? (
+        !filteredAssets.lsp7.length && !assets.lsp8.length ? (
           <div className="mb-6 flex items-center justify-center rounded-lg bg-gray-100 p-3 text-center text-xs font-medium uppercase tracking-wider text-gray-900 dark:bg-gray-900 dark:text-white sm:h-13 sm:text-sm">
             Empty
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3">
-            {assets.lsp7.map((asset: Lsp7Asset) => (
+            {filteredAssets.lsp7.map((asset: Lsp7Asset) => (
               <AssetCard
                 asset={asset}
                 assets={assets.lsp7}

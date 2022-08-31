@@ -6,8 +6,7 @@ import { useWeb3Context } from '@/core/web3';
 
 const VaultsPage: NextPage = () => {
   const { web3, address, controllerAddress } = useWeb3Context();
-  const [vaults, setVaults, loading] = useVaults();
-  console.log(loading, vaults);
+  const [vaults, setVaults] = useVaults();
 
   return (
     <>
@@ -23,7 +22,8 @@ const VaultsPage: NextPage = () => {
             web3!,
             address!,
             controllerAddress!,
-            vaults
+            vaults,
+            setVaults
           );
 
           setVaults([...vaults, newVault]);

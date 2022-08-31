@@ -40,15 +40,6 @@ function Header() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="container mx-auto px-6 pb-4 sm:pb-6">
-      <hr />
-      <span>I&quot;m here to stay (Footer)</span>
-    </footer>
-  );
-}
-
 export default function Layout({ children }: Props) {
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-dark">
@@ -56,7 +47,6 @@ export default function Layout({ children }: Props) {
       <main className="min-h-[100vh] px-4 pt-24 pb-4 sm:px-6 sm:pb-6 lg:px-8 xl:px-10 xl:pb-10 3xl:px-12">
         {children}
       </main>
-      <Footer />
     </div>
   );
 }

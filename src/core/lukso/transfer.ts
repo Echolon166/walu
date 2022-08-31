@@ -120,3 +120,49 @@ export const transferLSP8Asset = async (
     });
   }
 };
+
+export const transferLYX = async (
+  web3: Web3,
+  address: string,
+  from: string,
+  to: string,
+  amount: string,
+  controllerAddress?: string,
+  data: string = '0x'
+) => {
+  const rawAmount = web3.utils.toWei(amount);
+
+  // Transfer from main account
+  if (address === from) {
+    await web3.eth.sendTransaction({
+      from,
+      to,
+      value: rawAmount,
+    });
+  } else {
+    const vault = new web3.eth.Contract(LSP9Vault.abi as AbiItem[], from);
+    const up = new web3.eth.Contract(
+      UniversalProfile.abi as AbiItem[],
+      address
+    );
+
+    const executePayloadVault = await vault.methods
+      .execute(0, to, rawAmount, data)
+      .encodeABI();
+
+    const executePayloadUp = await up.methods
+      .execute(0, from, 0, executePayloadVault)
+      .encodeABI();
+
+    const keyManagerAddress = await up.methods.owner().call();
+    const km = new web3.eth.Contract(
+      LSP6KeyManager.abi as AbiItem[],
+      keyManagerAddress
+    );
+
+    await km.methods.execute(executePayloadUp).send({
+      from: controllerAddress,
+      gasLimit: DEFAULT_GAS,
+    });
+  }
+};
