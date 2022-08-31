@@ -4,7 +4,7 @@ Wallet App & Vault Manager for managing assets and vaults on Lukso Blockchain.
 
 Link: https://walu-echolon166.vercel.app/
 
-Video Demo: [Youtube]()
+Video Demo: [Youtube](https://youtu.be/q2LFZ-8Va9M)
 
 ## About
 
