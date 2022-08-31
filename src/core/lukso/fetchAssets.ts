@@ -120,18 +120,15 @@ async function fetchAssets(web3: Web3, address: string, ownedAssets: string[]) {
   return [lsp7Assets, lsp8Assets];
 }
 
-export const useAssets = (address: string): [AssetMap, boolean] => {
+export const useAssets = (address: string): [AssetMap, any] => {
   const [lsp7Assets, setLsp7Assets] = useState<Lsp7Asset[]>([]);
   const [lsp8Assets, setLsp8Assets] = useState<Lsp8Asset[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const { web3 } = useWeb3Context();
 
   useEffect(() => {
     const fetchProfileAssets = async () => {
       try {
-        setLoading(true);
-
         // Fetch the LSP5 data of the Universal Profile to get its owned assets
         const profile = getInstance(
           UniversalProfileSchema,
@@ -146,7 +143,6 @@ export const useAssets = (address: string): [AssetMap, boolean] => {
           ([mappedLsp7Assets, mappedLsp8Assets]) => {
             setLsp7Assets(mappedLsp7Assets as Lsp7Asset[]);
             setLsp8Assets(mappedLsp8Assets as Lsp8Asset[]);
-            setLoading(false);
           }
         );
       } catch (e) {
@@ -157,5 +153,8 @@ export const useAssets = (address: string): [AssetMap, boolean] => {
     fetchProfileAssets();
   }, [address]);
 
-  return [{ lsp7: lsp7Assets, lsp8: lsp8Assets }, loading];
+  return [
+    { lsp7: lsp7Assets, lsp8: lsp8Assets },
+    { setLsp7: setLsp7Assets, setLsp8: setLsp8Assets },
+  ];
 };

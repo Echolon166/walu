@@ -16,7 +16,7 @@ import { ipfsLink } from '@/utils';
 const DashboardPage: NextPage = () => {
   const { address } = useWeb3Context();
 
-  const [assets] = useAssets(address as string);
+  const [assets, setAssets] = useAssets(address as string);
   const [vaults] = useVaults();
   const [profile] = useProfile(address as string);
   console.log(assets.lsp7, assets.lsp8);
@@ -40,13 +40,13 @@ const DashboardPage: NextPage = () => {
       <div className="relative h-36 w-full overflow-hidden rounded-lg sm:h-44 md:h-64 xl:h-80 2xl:h-96 3xl:h-[448px]">
         <Image
           src={ipfsLink(
-            profile.backgroundImage[0]?.url,
+            profile.backgroundImage?.[0]?.url,
             '/assets/images/placeholder-background.jpg'
           )}
           placeholder="blur"
-          blurDataURL={ipfsLink(profile.backgroundImage[0]?.url)}
+          blurDataURL={ipfsLink(profile.backgroundImage?.[0]?.url)}
           layout="fill"
-          objectFit="cover"
+          objectFit="fill"
           alt="Profile Background Image"
         />
       </div>
@@ -57,7 +57,7 @@ const DashboardPage: NextPage = () => {
           {/* Profile Image */}
           <Avatar
             size="xl"
-            image={ipfsLink(profile.profileImage[0]?.url)}
+            image={ipfsLink(profile.profileImage?.[0]?.url)}
             alt="Profile Image"
             className="z-10 mx-auto -mt-12 dark:border-gray-500 sm:-mt-14 md:mx-0 md:-mt-16 xl:mx-0 3xl:-mt-20"
           />
@@ -120,7 +120,7 @@ const DashboardPage: NextPage = () => {
           </div>
 
           <div className="grow pt-6 pb-9 md:-mt-2.5 md:pt-1.5 md:pb-0 md:pl-7 lg:pl-10 xl:pl-14 3xl:pl-16">
-            <ProfileTab assets={assets} vaults={vaults} />
+            <ProfileTab assets={assets} setAssets={setAssets} vaults={vaults} />
           </div>
         </div>
       </div>

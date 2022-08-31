@@ -12,20 +12,32 @@ type DisconnectProps = {
 
 const ConnectButton = ({ connect }: ConnectProps) =>
   connect ? (
-    <Button onClick={connect} className="shadow-main hover:shadow-large">
+    <Button
+      variant={'ghost'}
+      onClick={connect}
+      className="shadow-main hover:shadow-large"
+    >
       CONNECT
     </Button>
   ) : (
-    <Button className="shadow-main hover:shadow-large">Loading...</Button>
+    <Button variant={'ghost'} className="shadow-main hover:shadow-large">
+      Loading...
+    </Button>
   );
 
 const DisconnectButton = ({ disconnect }: DisconnectProps) =>
   disconnect ? (
-    <Button onClick={disconnect} className="shadow-main hover:shadow-large">
+    <Button
+      variant={'ghost'}
+      onClick={disconnect}
+      className="shadow-main hover:shadow-large"
+    >
       DISCONNECT
     </Button>
   ) : (
-    <Button className="shadow-main hover:shadow-large">Loading...</Button>
+    <Button variant={'ghost'} className="shadow-main hover:shadow-large">
+      Loading...
+    </Button>
   );
 
 export function Web3Button() {

@@ -45,9 +45,9 @@ class Asset {
 }
 
 export class Lsp7Asset extends Asset {
-  balance: number;
+  balance: string;
 
-  constructor(contractAddress: string, rawAsset: any, balance: number) {
+  constructor(contractAddress: string, rawAsset: any, balance: string) {
     super(contractAddress, rawAsset);
 
     this.balance = balance;
@@ -68,7 +68,7 @@ export class Lsp8Asset extends Asset {
     super(contractAddress, rawAsset);
 
     this.id = id;
-    this.lsp8Metadata = lsp8Metadata[0]?.value?.LSP4Metadata;
+    this.lsp8Metadata = lsp8Metadata?.[0]?.value?.LSP4Metadata;
   }
 }
 

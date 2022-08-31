@@ -5,8 +5,8 @@ import Web3Modal from 'web3modal';
 
 import { DEFAULT_NETWORK_CONFIG } from '@/utils';
 
-import type { Web3Action, Web3ProviderState } from './web3Provider';
-import { web3InitialState, web3Reducer } from './web3Provider';
+import type { Web3Action, Web3ProviderState } from './Web3Provider';
+import { web3InitialState, web3Reducer } from './Web3Provider';
 
 const providerOptions = {
   walletconnect: {
