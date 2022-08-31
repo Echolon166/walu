@@ -14,7 +14,11 @@ export const Logo: React.FC<React.SVGAttributes<{}>> = (props) => {
       {...props}
     >
       <span className="relative flex overflow-hidden">
-        {isMounted && <h1>Walu</h1>}
+        {isMounted && (
+          <h1 className="text-xl font-medium tracking-tighter text-gray-900 dark:text-white xl:text-2xl">
+            Walu
+          </h1>
+        )}
       </span>
     </AnchorLink>
   );

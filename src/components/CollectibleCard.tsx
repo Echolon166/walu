@@ -43,33 +43,16 @@ export default function CollectibleCard({
           </div>
           <div className="absolute top-0 left-0 z-[5] flex h-full w-full flex-col justify-between bg-gradient-to-t from-black p-5 md:p-6">
             <div className="flex justify-between gap-3">
-              <div
-                className="inline-flex h-8 shrink-0 items-center rounded-2xl bg-white/20 px-4 text-xs font-medium uppercase -tracking-wide text-white
-        backdrop-blur-[40px]"
-              >
-                {collectible.name}
+              <div className="block">
+                <h2 className="mb-1.5 truncate text-lg font-medium -tracking-wider text-white">
+                  {collectible.name}
+                </h2>
               </div>
               <Avatar
                 image={ipfsLink(collectible.metadata?.icon?.[0]?.url)}
                 alt={collectible.name}
                 shape="rounded"
               />
-            </div>
-            <div className="block">
-              <h2 className="mb-1.5 truncate text-lg font-medium -tracking-wider text-white">
-                {collectible.name}
-              </h2>
-              <Avatar
-                image={'/assets/images/lukso_white.svg'}
-                alt={collectible.creators?.[0] ?? ''}
-                size="xs"
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
-              <div className="ml-2 truncate pr-2 text-sm -tracking-wide text-white">
-                @{collectible.creators?.[0] ?? ''}
-              </div>
             </div>
           </div>
         </div>

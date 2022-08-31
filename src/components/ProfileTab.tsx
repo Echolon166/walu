@@ -98,8 +98,8 @@ export default function ProfileTab({
           <div>
             {isPermissioned || (
               <sup className="inline-block text-sm text-red-500 ltr:ml-1 rtl:mr-1">
-                Please give permissions to app controller to be able to manage
-                vaults:
+                App controller will ask for required CALL and SET_DATA
+                permissions on your first interaction with vaults.
               </sup>
             )}
 
